@@ -66,9 +66,10 @@ class ElementwiseOp:
         tC_copy_slice = tiled_copy_C.get_slice(tx)
 
         # partition the thread's slice from the CTA as source for copy
+        # _S means source _D means destination (good to bifurcate)
         tA = tA_copy_slice.partition_S(bA)
         tB = tB_copy_slice.partition_S(bB)
-        tC = tC_copy_slice.partition_S(bC)
+        tC = tC_copy_slice.partition_D(bC)
 
         # allocate fragments for gmem -> rmem copy
         tAfA = cute.make_fragment_like(tA)
